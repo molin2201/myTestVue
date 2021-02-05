@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.AzExchangeRateMapper">
+    
+    <resultMap type="AzExchangeRate" id="AzExchangeRateResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="unitPrice"    column="unit_price"    />
+        <result property="favourable"    column="favourable"    />
+        <result property="minPrice"    column="min_price"    />
+        <result property="remark"    column="remark"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="minAmt"    column="min_amt"    />
+        <result property="addAmt"    column="add_amt"    />
+        <result property="type"    column="type"    />
+    </resultMap>
+
+    <sql id="selectAzExchangeRateVo">
+        select id, name, unit_price, favourable, min_price, remark, update_time, min_amt, add_amt, type from az_exchange_rate
+    </sql>
+
+    <select id="selectAzExchangeRateList" parameterType="AzExchangeRate" resultMap="AzExchangeRateResult">
+        <include refid="selectAzExchangeRateVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectAzExchangeRateById" parameterType="Long" resultMap="AzExchangeRateResult">
+        <include refid="selectAzExchangeRateVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertAzExchangeRate" parameterType="AzExchangeRate" useGeneratedKeys="true" keyProperty="id">
+        insert into az_exchange_rate
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null">name,</if>
+            <if test="unitPrice != null">unit_price,</if>
+            <if test="favourable != null">favourable,</if>
+            <if test="minPrice != null">min_price,</if>
+            <if test="remark != null">remark,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="minAmt != null">min_amt,</if>
+            <if test="addAmt != null">add_amt,</if>
+            <if test="type != null">type,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null">#{name},</if>
+            <if test="unitPrice != null">#{unitPrice},</if>
+            <if test="favourable != null">#{favourable},</if>
+            <if test="minPrice != null">#{minPrice},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="minAmt != null">#{minAmt},</if>
+            <if test="addAmt != null">#{addAmt},</if>
+            <if test="type != null">#{type},</if>
+         </trim>
+    </insert>
+
+    <update id="updateAzExchangeRate" parameterType="AzExchangeRate">
+        update az_exchange_rate
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null">name = #{name},</if>
+            <if test="unitPrice != null">unit_price = #{unitPrice},</if>
+            <if test="favourable != null">favourable = #{favourable},</if>
+            <if test="minPrice != null">min_price = #{minPrice},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="minAmt != null">min_amt = #{minAmt},</if>
+            <if test="addAmt != null">add_amt = #{addAmt},</if>
+            <if test="type != null">type = #{type},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteAzExchangeRateById" parameterType="Long">
+        delete from az_exchange_rate where id = #{id}
+    </delete>
+
+    <delete id="deleteAzExchangeRateByIds" parameterType="String">
+        delete from az_exchange_rate where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

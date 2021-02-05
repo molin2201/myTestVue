@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.AzUserAcountMapper">
+    
+    <resultMap type="AzUserAcount" id="AzUserAcountResult">
+        <result property="id"    column="id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="balAmt"    column="bal_amt"    />
+        <result property="addAmt"    column="add_amt"    />
+        <result property="consumeAmt"    column="consume_amt"    />
+        <result property="profitAmt"    column="profit_amt"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectAzUserAcountVo">
+        select id, user_id, bal_amt, add_amt, consume_amt, profit_amt, update_time from az_user_acount
+    </sql>
+
+    <select id="selectAzUserAcountList" parameterType="AzUserAcount" resultMap="AzUserAcountResult">
+        <include refid="selectAzUserAcountVo"/>
+        <where>  
+            <if test="userId != null "> and user_id = #{userId}</if>
+        </where>
+    </select>
+    
+    <select id="selectAzUserAcountById" parameterType="Long" resultMap="AzUserAcountResult">
+        <include refid="selectAzUserAcountVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertAzUserAcount" parameterType="AzUserAcount" useGeneratedKeys="true" keyProperty="id">
+        insert into az_user_acount
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">user_id,</if>
+            <if test="balAmt != null">bal_amt,</if>
+            <if test="addAmt != null">add_amt,</if>
+            <if test="consumeAmt != null">consume_amt,</if>
+            <if test="profitAmt != null">profit_amt,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">#{userId},</if>
+            <if test="balAmt != null">#{balAmt},</if>
+            <if test="addAmt != null">#{addAmt},</if>
+            <if test="consumeAmt != null">#{consumeAmt},</if>
+            <if test="profitAmt != null">#{profitAmt},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateAzUserAcount" parameterType="AzUserAcount">
+        update az_user_acount
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="balAmt != null">bal_amt = #{balAmt},</if>
+            <if test="addAmt != null">add_amt = #{addAmt},</if>
+            <if test="consumeAmt != null">consume_amt = #{consumeAmt},</if>
+            <if test="profitAmt != null">profit_amt = #{profitAmt},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteAzUserAcountById" parameterType="Long">
+        delete from az_user_acount where id = #{id}
+    </delete>
+
+    <delete id="deleteAzUserAcountByIds" parameterType="String">
+        delete from az_user_acount where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

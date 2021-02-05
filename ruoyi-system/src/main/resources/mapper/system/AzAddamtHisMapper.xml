@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.AzAddamtHisMapper">
+    
+    <resultMap type="AzAddamtHis" id="AzAddamtHisResult">
+        <result property="id"    column="id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="count"    column="count"    />
+        <result property="unitPrice"    column="unit_price"    />
+        <result property="amt"    column="amt"    />
+        <result property="createUserId"    column="create_user_id"    />
+        <result property="remark"    column="remark"    />
+        <result property="optUserId"    column="opt_user_id"    />
+        <result property="interfaceId"    column="interface_id"    />
+        <result property="payType"    column="pay_type"    />
+        <result property="orderNo"    column="order_no"    />
+        <result property="orderSatus"    column="order_satus"    />
+    </resultMap>
+
+    <sql id="selectAzAddamtHisVo">
+        select id, create_time, count, unit_price, amt, create_user_id, remark, opt_user_id, interface_id, pay_type, order_no, order_satus from az_addamt_his
+    </sql>
+
+    <select id="selectAzAddamtHisList" parameterType="AzAddamtHis" resultMap="AzAddamtHisResult">
+        <include refid="selectAzAddamtHisVo"/>
+        <where>  
+            <if test="params.beginCreateTime != null and params.beginCreateTime != '' and params.endCreateTime != null and params.endCreateTime != ''"> and create_time between #{params.beginCreateTime} and #{params.endCreateTime}</if>
+            <if test="optUserId != null "> and opt_user_id = #{optUserId}</if>
+            <if test="interfaceId != null  and interfaceId != ''"> and interface_id = #{interfaceId}</if>
+            <if test="orderNo != null  and orderNo != ''"> and order_no = #{orderNo}</if>
+        </where>
+    </select>
+    
+    <select id="selectAzAddamtHisById" parameterType="Long" resultMap="AzAddamtHisResult">
+        <include refid="selectAzAddamtHisVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertAzAddamtHis" parameterType="AzAddamtHis" useGeneratedKeys="true" keyProperty="id">
+        insert into az_addamt_his
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">create_time,</if>
+            <if test="count != null">count,</if>
+            <if test="unitPrice != null">unit_price,</if>
+            <if test="amt != null">amt,</if>
+            <if test="createUserId != null">create_user_id,</if>
+            <if test="remark != null">remark,</if>
+            <if test="optUserId != null">opt_user_id,</if>
+            <if test="interfaceId != null">interface_id,</if>
+            <if test="payType != null">pay_type,</if>
+            <if test="orderNo != null">order_no,</if>
+            <if test="orderSatus != null">order_satus,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">#{createTime},</if>
+            <if test="count != null">#{count},</if>
+            <if test="unitPrice != null">#{unitPrice},</if>
+            <if test="amt != null">#{amt},</if>
+            <if test="createUserId != null">#{createUserId},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="optUserId != null">#{optUserId},</if>
+            <if test="interfaceId != null">#{interfaceId},</if>
+            <if test="payType != null">#{payType},</if>
+            <if test="orderNo != null">#{orderNo},</if>
+            <if test="orderSatus != null">#{orderSatus},</if>
+         </trim>
+    </insert>
+
+    <update id="updateAzAddamtHis" parameterType="AzAddamtHis">
+        update az_addamt_his
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="count != null">count = #{count},</if>
+            <if test="unitPrice != null">unit_price = #{unitPrice},</if>
+            <if test="amt != null">amt = #{amt},</if>
+            <if test="createUserId != null">create_user_id = #{createUserId},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="optUserId != null">opt_user_id = #{optUserId},</if>
+            <if test="interfaceId != null">interface_id = #{interfaceId},</if>
+            <if test="payType != null">pay_type = #{payType},</if>
+            <if test="orderNo != null">order_no = #{orderNo},</if>
+            <if test="orderSatus != null">order_satus = #{orderSatus},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteAzAddamtHisById" parameterType="Long">
+        delete from az_addamt_his where id = #{id}
+    </delete>
+
+    <delete id="deleteAzAddamtHisByIds" parameterType="String">
+        delete from az_addamt_his where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

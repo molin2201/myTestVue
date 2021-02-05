@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.AzAreaMapper">
+    
+    <resultMap type="AzArea" id="AzAreaResult">
+        <result property="id"    column="id"    />
+        <result property="priCode"    column="pri_code"    />
+        <result property="code"    column="code"    />
+        <result property="name"    column="name"    />
+        <result property="remark"    column="remark"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="updateUserId"    column="update_user_id"    />
+    </resultMap>
+
+    <sql id="selectAzAreaVo">
+        select id, pri_code, code, name, remark, update_time, update_user_id from az_area
+    </sql>
+
+    <select id="selectAzAreaList" parameterType="AzArea" resultMap="AzAreaResult">
+        <include refid="selectAzAreaVo"/>
+        <where>  
+            <if test="code != null  and code != ''"> and code = #{code}</if>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectAzAreaById" parameterType="Long" resultMap="AzAreaResult">
+        <include refid="selectAzAreaVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertAzArea" parameterType="AzArea" useGeneratedKeys="true" keyProperty="id">
+        insert into az_area
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="priCode != null">pri_code,</if>
+            <if test="code != null">code,</if>
+            <if test="name != null">name,</if>
+            <if test="remark != null">remark,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="updateUserId != null">update_user_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="priCode != null">#{priCode},</if>
+            <if test="code != null">#{code},</if>
+            <if test="name != null">#{name},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="updateUserId != null">#{updateUserId},</if>
+         </trim>
+    </insert>
+
+    <update id="updateAzArea" parameterType="AzArea">
+        update az_area
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="priCode != null">pri_code = #{priCode},</if>
+            <if test="code != null">code = #{code},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="updateUserId != null">update_user_id = #{updateUserId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteAzAreaById" parameterType="Long">
+        delete from az_area where id = #{id}
+    </delete>
+
+    <delete id="deleteAzAreaByIds" parameterType="String">
+        delete from az_area where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

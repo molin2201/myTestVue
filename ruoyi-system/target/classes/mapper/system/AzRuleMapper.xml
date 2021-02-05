@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.AzRuleMapper">
+    
+    <resultMap type="AzRule" id="AzRuleResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="remark"    column="remark"    />
+        <result property="ruleType"    column="rule_type"    />
+        <result property="areaId"    column="area_id"    />
+        <result property="companyId"    column="company_id"    />
+        <result property="numruleId"    column="numrule_id"    />
+        <result property="limitDay"    column="limit_day"    />
+        <result property="field1"    column="field1"    />
+        <result property="field2"    column="field2"    />
+        <result property="createUserId"    column="create_user_id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="status"    column="status"    />
+    </resultMap>
+
+    <sql id="selectAzRuleVo">
+        select id, name, remark, rule_type, area_id, company_id, numrule_id, limit_day, field1, field2, create_user_id, create_time, status from az_rule
+    </sql>
+
+    <select id="selectAzRuleList" parameterType="AzRule" resultMap="AzRuleResult">
+        <include refid="selectAzRuleVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="ruleType != null "> and rule_type = #{ruleType}</if>
+            <if test="areaId != null  and areaId != ''"> and area_id = #{areaId}</if>
+            <if test="companyId != null  and companyId != ''"> and company_id = #{companyId}</if>
+            <if test="numruleId != null  and numruleId != ''"> and numrule_id = #{numruleId}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+        </where>
+    </select>
+    
+    <select id="selectAzRuleById" parameterType="Long" resultMap="AzRuleResult">
+        <include refid="selectAzRuleVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertAzRule" parameterType="AzRule" useGeneratedKeys="true" keyProperty="id">
+        insert into az_rule
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null">name,</if>
+            <if test="remark != null">remark,</if>
+            <if test="ruleType != null">rule_type,</if>
+            <if test="areaId != null">area_id,</if>
+            <if test="companyId != null">company_id,</if>
+            <if test="numruleId != null">numrule_id,</if>
+            <if test="limitDay != null">limit_day,</if>
+            <if test="field1 != null">field1,</if>
+            <if test="field2 != null">field2,</if>
+            <if test="createUserId != null">create_user_id,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="status != null">status,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null">#{name},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="ruleType != null">#{ruleType},</if>
+            <if test="areaId != null">#{areaId},</if>
+            <if test="companyId != null">#{companyId},</if>
+            <if test="numruleId != null">#{numruleId},</if>
+            <if test="limitDay != null">#{limitDay},</if>
+            <if test="field1 != null">#{field1},</if>
+            <if test="field2 != null">#{field2},</if>
+            <if test="createUserId != null">#{createUserId},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="status != null">#{status},</if>
+         </trim>
+    </insert>
+
+    <update id="updateAzRule" parameterType="AzRule">
+        update az_rule
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null">name = #{name},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="ruleType != null">rule_type = #{ruleType},</if>
+            <if test="areaId != null">area_id = #{areaId},</if>
+            <if test="companyId != null">company_id = #{companyId},</if>
+            <if test="numruleId != null">numrule_id = #{numruleId},</if>
+            <if test="limitDay != null">limit_day = #{limitDay},</if>
+            <if test="field1 != null">field1 = #{field1},</if>
+            <if test="field2 != null">field2 = #{field2},</if>
+            <if test="createUserId != null">create_user_id = #{createUserId},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="status != null">status = #{status},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteAzRuleById" parameterType="Long">
+        delete from az_rule where id = #{id}
+    </delete>
+
+    <delete id="deleteAzRuleByIds" parameterType="String">
+        delete from az_rule where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

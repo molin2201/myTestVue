@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.AzInterfaceMapper">
+    
+    <resultMap type="AzInterface" id="AzInterfaceResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="address"    column="address"    />
+        <result property="hitCount"    column="hit_count"    />
+        <result property="userCount"    column="user_count"    />
+        <result property="balCount"    column="bal_count"    />
+        <result property="rateAmt"    column="rate_amt"    />
+        <result property="status"    column="status"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="timeout"    column="timeout"    />
+        <result property="version"    column="version"    />
+    </resultMap>
+
+    <sql id="selectAzInterfaceVo">
+        select id, name, address, hit_count, user_count, bal_count, rate_amt, status, create_time, timeout, version from az_interface
+    </sql>
+
+    <select id="selectAzInterfaceList" parameterType="AzInterface" resultMap="AzInterfaceResult">
+        <include refid="selectAzInterfaceVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+            <if test="params.beginCreateTime != null and params.beginCreateTime != '' and params.endCreateTime != null and params.endCreateTime != ''"> and create_time between #{params.beginCreateTime} and #{params.endCreateTime}</if>
+            <if test="version != null  and version != ''"> and version = #{version}</if>
+        </where>
+    </select>
+    
+    <select id="selectAzInterfaceById" parameterType="Long" resultMap="AzInterfaceResult">
+        <include refid="selectAzInterfaceVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertAzInterface" parameterType="AzInterface" useGeneratedKeys="true" keyProperty="id">
+        insert into az_interface
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null">name,</if>
+            <if test="address != null">address,</if>
+            <if test="hitCount != null">hit_count,</if>
+            <if test="userCount != null">user_count,</if>
+            <if test="balCount != null">bal_count,</if>
+            <if test="rateAmt != null">rate_amt,</if>
+            <if test="status != null">status,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="timeout != null">timeout,</if>
+            <if test="version != null">version,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null">#{name},</if>
+            <if test="address != null">#{address},</if>
+            <if test="hitCount != null">#{hitCount},</if>
+            <if test="userCount != null">#{userCount},</if>
+            <if test="balCount != null">#{balCount},</if>
+            <if test="rateAmt != null">#{rateAmt},</if>
+            <if test="status != null">#{status},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="timeout != null">#{timeout},</if>
+            <if test="version != null">#{version},</if>
+         </trim>
+    </insert>
+
+    <update id="updateAzInterface" parameterType="AzInterface">
+        update az_interface
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null">name = #{name},</if>
+            <if test="address != null">address = #{address},</if>
+            <if test="hitCount != null">hit_count = #{hitCount},</if>
+            <if test="userCount != null">user_count = #{userCount},</if>
+            <if test="balCount != null">bal_count = #{balCount},</if>
+            <if test="rateAmt != null">rate_amt = #{rateAmt},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="timeout != null">timeout = #{timeout},</if>
+            <if test="version != null">version = #{version},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteAzInterfaceById" parameterType="Long">
+        delete from az_interface where id = #{id}
+    </delete>
+
+    <delete id="deleteAzInterfaceByIds" parameterType="String">
+        delete from az_interface where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

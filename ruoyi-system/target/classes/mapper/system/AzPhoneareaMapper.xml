@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.AzPhoneareaMapper">
+    
+    <resultMap type="AzPhonearea" id="AzPhoneareaResult">
+        <result property="id"    column="id"    />
+        <result property="prePhone"    column="pre_phone"    />
+        <result property="areaCode"    column="area_code"    />
+        <result property="areaName"    column="area_name"    />
+        <result property="company"    column="company"    />
+        <result property="remark"    column="remark"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="updateUserId"    column="update_user_id"    />
+    </resultMap>
+
+    <sql id="selectAzPhoneareaVo">
+        select id, pre_phone, area_code, area_name, company, remark, update_time, update_user_id from az_phonearea
+    </sql>
+
+    <select id="selectAzPhoneareaList" parameterType="AzPhonearea" resultMap="AzPhoneareaResult">
+        <include refid="selectAzPhoneareaVo"/>
+        <where>  
+            <if test="prePhone != null  and prePhone != ''"> and pre_phone = #{prePhone}</if>
+            <if test="areaCode != null  and areaCode != ''"> and area_code = #{areaCode}</if>
+            <if test="areaName != null  and areaName != ''"> and area_name like concat('%', #{areaName}, '%')</if>
+            <if test="company != null  and company != ''"> and company = #{company}</if>
+            <if test="updateUserId != null and updateUserId != ''"> and update_user_id = #{updateUserId}</if>
+        </where>
+    </select>
+    
+    <select id="selectAzPhoneareaById" parameterType="Long" resultMap="AzPhoneareaResult">
+        <include refid="selectAzPhoneareaVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertAzPhonearea" parameterType="AzPhonearea" useGeneratedKeys="true" keyProperty="id">
+        insert into az_phonearea
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="prePhone != null">pre_phone,</if>
+            <if test="areaCode != null">area_code,</if>
+            <if test="areaName != null">area_name,</if>
+            <if test="company != null">company,</if>
+            <if test="remark != null">remark,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="updateUserId != null">update_user_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="prePhone != null">#{prePhone},</if>
+            <if test="areaCode != null">#{areaCode},</if>
+            <if test="areaName != null">#{areaName},</if>
+            <if test="company != null">#{company},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="updateUserId != null">#{updateUserId},</if>
+         </trim>
+    </insert>
+
+    <update id="updateAzPhonearea" parameterType="AzPhonearea">
+        update az_phonearea
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="prePhone != null">pre_phone = #{prePhone},</if>
+            <if test="areaCode != null">area_code = #{areaCode},</if>
+            <if test="areaName != null">area_name = #{areaName},</if>
+            <if test="company != null">company = #{company},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="updateUserId != null">update_user_id = #{updateUserId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteAzPhoneareaById" parameterType="Long">
+        delete from az_phonearea where id = #{id}
+    </delete>
+
+    <delete id="deleteAzPhoneareaByIds" parameterType="String">
+        delete from az_phonearea where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

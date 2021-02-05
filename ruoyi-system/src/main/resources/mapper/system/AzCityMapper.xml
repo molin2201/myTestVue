@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.AzCityMapper">
+    
+    <resultMap type="AzCity" id="AzCityResult">
+        <result property="id"    column="id"    />
+        <result property="areaCode"    column="area_code"    />
+        <result property="province"    column="province"    />
+        <result property="city"    column="city"    />
+        <result property="callLength"    column="call_length"    />
+        <result property="bcallLength"    column="bcall_length"    />
+        <result property="desc"    column="desc"    />
+        <result property="areaName"    column="area_name"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="updateUserId"    column="update_user_id"    />
+    </resultMap>
+
+    <sql id="selectAzCityVo">
+        select id, area_code, province, city, call_length, bcall_length, `desc`, area_name, update_time, update_user_id from az_city
+    </sql>
+
+    <select id="selectAzCityList" parameterType="AzCity" resultMap="AzCityResult">
+        <include refid="selectAzCityVo"/>
+        <where>  
+            <if test="areaCode != null  and areaCode != ''"> and area_code = #{areaCode}</if>
+            <if test="province != null  and province != ''"> and province = #{province}</if>
+            <if test="city != null  and city != ''"> and city = #{city}</if>
+            <if test="callLength != null  and callLength != ''"> and call_length = #{callLength}</if>
+            <if test="bcallLength != null  and bcallLength != ''"> and bcall_length = #{bcallLength}</if>
+            <if test="desc != null  and desc != ''"> and `desc` = #{desc}</if>
+            <if test="areaName != null  and areaName != ''"> and area_name like concat('%', #{areaName}, '%')</if>
+            <if test="updateUserId != null "> and update_user_id = #{updateUserId}</if>
+        </where>
+    </select>
+    
+    <select id="selectAzCityById" parameterType="Long" resultMap="AzCityResult">
+        <include refid="selectAzCityVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertAzCity" parameterType="AzCity" useGeneratedKeys="true" keyProperty="id">
+        insert into az_city
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="areaCode != null">area_code,</if>
+            <if test="province != null">province,</if>
+            <if test="city != null">city,</if>
+            <if test="callLength != null">call_length,</if>
+            <if test="bcallLength != null">bcall_length,</if>
+            <if test="desc != null">`desc`,</if>
+            <if test="areaName != null">area_name,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="updateUserId != null">update_user_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="areaCode != null">#{areaCode},</if>
+            <if test="province != null">#{province},</if>
+            <if test="city != null">#{city},</if>
+            <if test="callLength != null">#{callLength},</if>
+            <if test="bcallLength != null">#{bcallLength},</if>
+            <if test="desc != null">#{desc},</if>
+            <if test="areaName != null">#{areaName},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="updateUserId != null">#{updateUserId},</if>
+         </trim>
+    </insert>
+
+    <update id="updateAzCity" parameterType="AzCity">
+        update az_city
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="areaCode != null">area_code = #{areaCode},</if>
+            <if test="province != null">province = #{province},</if>
+            <if test="city != null">city = #{city},</if>
+            <if test="callLength != null">call_length = #{callLength},</if>
+            <if test="bcallLength != null">bcall_length = #{bcallLength},</if>
+            <if test="desc != null">`desc` = #{desc},</if>
+            <if test="areaName != null">area_name = #{areaName},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="updateUserId != null">update_user_id = #{updateUserId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteAzCityById" parameterType="Long">
+        delete from az_city where id = #{id}
+    </delete>
+
+    <delete id="deleteAzCityByIds" parameterType="String">
+        delete from az_city where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.AzPhoneBlackMapper">
+    
+    <resultMap type="AzPhoneBlack" id="AzPhoneBlackResult">
+        <result property="id"    column="id"    />
+        <result property="phone"    column="phone"    />
+        <result property="status"    column="status"    />
+        <result property="source"    column="source"    />
+        <result property="dbType"    column="db_type"    />
+        <result property="phoneType"    column="phone_type"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="createUserId"    column="create_user_id"    />
+    </resultMap>
+
+    <sql id="selectAzPhoneBlackVo">
+        select id, phone, status, source, db_type, phone_type, create_time, create_user_id from az_phone_black
+    </sql>
+
+    <select id="selectAzPhoneBlackList" parameterType="AzPhoneBlack" resultMap="AzPhoneBlackResult">
+        <include refid="selectAzPhoneBlackVo"/>
+        <where>  
+            <if test="phone != null  and phone != ''"> and phone = #{phone}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+            <if test="source != null "> and source = #{source}</if>
+            <if test="dbType != null  and dbType != ''"> and db_type = #{dbType}</if>
+            <if test="phoneType != null "> and phone_type = #{phoneType}</if>
+            <if test="params.beginCreateTime != null and params.beginCreateTime != '' and params.endCreateTime != null and params.endCreateTime != ''"> and create_time between #{params.beginCreateTime} and #{params.endCreateTime}</if>
+            <if test="createUserId != null "> and create_user_id = #{createUserId}</if>
+        </where>
+    </select>
+    
+    <select id="selectAzPhoneBlackById" parameterType="Long" resultMap="AzPhoneBlackResult">
+        <include refid="selectAzPhoneBlackVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertAzPhoneBlack" parameterType="AzPhoneBlack" useGeneratedKeys="true" keyProperty="id">
+        insert into az_phone_black
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="phone != null">phone,</if>
+            <if test="status != null">status,</if>
+            <if test="source != null">source,</if>
+            <if test="dbType != null">db_type,</if>
+            <if test="phoneType != null">phone_type,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="createUserId != null">create_user_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="phone != null">#{phone},</if>
+            <if test="status != null">#{status},</if>
+            <if test="source != null">#{source},</if>
+            <if test="dbType != null">#{dbType},</if>
+            <if test="phoneType != null">#{phoneType},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="createUserId != null">#{createUserId},</if>
+         </trim>
+    </insert>
+
+    <update id="updateAzPhoneBlack" parameterType="AzPhoneBlack">
+        update az_phone_black
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="phone != null">phone = #{phone},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="source != null">source = #{source},</if>
+            <if test="dbType != null">db_type = #{dbType},</if>
+            <if test="phoneType != null">phone_type = #{phoneType},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="createUserId != null">create_user_id = #{createUserId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteAzPhoneBlackById" parameterType="Long">
+        delete from az_phone_black where id = #{id}
+    </delete>
+
+    <delete id="deleteAzPhoneBlackByIds" parameterType="String">
+        delete from az_phone_black where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

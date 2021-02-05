@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.AzFilterHislogMapper">
+    
+    <resultMap type="AzFilterHislog" id="AzFilterHislogResult">
+        <result property="id"    column="id"    />
+        <result property="filterType"    column="filter_type"    />
+        <result property="reqCount"    column="req_count"    />
+        <result property="filterCount"    column="filter_count"    />
+        <result property="insertDate"    column="insert_date"    />
+        <result property="interfaceId"    column="interface_id"    />
+        <result property="areaIn"    column="area_in"    />
+        <result property="userId"    column="user_id"    />
+    </resultMap>
+
+    <sql id="selectAzFilterHislogVo">
+        select id, filter_type, req_count, filter_count, insert_date, interface_id, area_in, user_id from az_filter_hislog
+    </sql>
+
+    <select id="selectAzFilterHislogList" parameterType="AzFilterHislog" resultMap="AzFilterHislogResult">
+        <include refid="selectAzFilterHislogVo"/>
+        <where>  
+            <if test="filterType != null  and filterType != ''"> and filter_type = #{filterType}</if>
+            <if test="params.beginInsertDate != null and params.beginInsertDate != '' and params.endInsertDate != null and params.endInsertDate != ''"> and insert_date between #{params.beginInsertDate} and #{params.endInsertDate}</if>
+            <if test="interfaceId != null  and interfaceId != ''"> and interface_id = #{interfaceId}</if>
+            <if test="areaIn != null  and areaIn != ''"> and area_in = #{areaIn}</if>
+            <if test="userId != null "> and user_id = #{userId}</if>
+        </where>
+    </select>
+    
+    <select id="selectAzFilterHislogById" parameterType="Long" resultMap="AzFilterHislogResult">
+        <include refid="selectAzFilterHislogVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertAzFilterHislog" parameterType="AzFilterHislog" useGeneratedKeys="true" keyProperty="id">
+        insert into az_filter_hislog
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="filterType != null">filter_type,</if>
+            <if test="reqCount != null">req_count,</if>
+            <if test="filterCount != null">filter_count,</if>
+            <if test="insertDate != null">insert_date,</if>
+            <if test="interfaceId != null">interface_id,</if>
+            <if test="areaIn != null">area_in,</if>
+            <if test="userId != null">user_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="filterType != null">#{filterType},</if>
+            <if test="reqCount != null">#{reqCount},</if>
+            <if test="filterCount != null">#{filterCount},</if>
+            <if test="insertDate != null">#{insertDate},</if>
+            <if test="interfaceId != null">#{interfaceId},</if>
+            <if test="areaIn != null">#{areaIn},</if>
+            <if test="userId != null">#{userId},</if>
+         </trim>
+    </insert>
+
+    <update id="updateAzFilterHislog" parameterType="AzFilterHislog">
+        update az_filter_hislog
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="filterType != null">filter_type = #{filterType},</if>
+            <if test="reqCount != null">req_count = #{reqCount},</if>
+            <if test="filterCount != null">filter_count = #{filterCount},</if>
+            <if test="insertDate != null">insert_date = #{insertDate},</if>
+            <if test="interfaceId != null">interface_id = #{interfaceId},</if>
+            <if test="areaIn != null">area_in = #{areaIn},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteAzFilterHislogById" parameterType="Long">
+        delete from az_filter_hislog where id = #{id}
+    </delete>
+
+    <delete id="deleteAzFilterHislogByIds" parameterType="String">
+        delete from az_filter_hislog where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
