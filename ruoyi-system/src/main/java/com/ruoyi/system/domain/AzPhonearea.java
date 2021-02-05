@@ -38,6 +38,8 @@ public class AzPhonearea extends BaseEntity
     @Excel(name = "创建人")
     private String updateUserId;
 
+
+
     public void setId(Long id) 
     {
         this.id = id;
@@ -91,6 +93,7 @@ public class AzPhonearea extends BaseEntity
     public void setUpdateUserId(String updateUserId) {
         this.updateUserId = updateUserId;
     }
+
 
     @Override
     public String toString() {

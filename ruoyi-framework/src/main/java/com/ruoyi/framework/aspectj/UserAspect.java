@@ -33,10 +33,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Collection;
-import java.util.Enumeration;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 操作日志记录处理
@@ -63,7 +60,7 @@ public class UserAspect
 
     }
 
-    @Before(value = "inApiLog()")
+    @Before(value = "editApiLog()")
     public void beforeEditApiLog(JoinPoint joinPoint) {
         try {
             LoginUser loginUser = SpringUtils.getBean(TokenService.class).getLoginUser(ServletUtils.getRequest());
@@ -74,11 +71,19 @@ public class UserAspect
                 }
                 if(object!=null&& object.getClass().getName().contains(page)){
                     invokeMethod(object,"setUpdateUserId",loginUser.getUsername());
-                    invokeMethod(object,"setUpdateTime",DateUtils.getTime());
+                    invokeMethodDate(object,"setUpdateTime");
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+    private void invokeMethodDate(Object object,String fieldName) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        try{
+            Method m = object.getClass().getMethod(fieldName,Date.class);
+            m.invoke(object, new Date());
+        }catch (Exception ex){
+            ex.printStackTrace();
         }
     }
     private void invokeMethod(Object object,String fieldName,String userName) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
@@ -86,6 +91,7 @@ public class UserAspect
                 Method m = object.getClass().getMethod(fieldName,String.class);
                 m.invoke(object, userName);
         }catch (Exception ex){
+            ex.printStackTrace();
         }
     }
 
@@ -99,11 +105,12 @@ public class UserAspect
                     continue;
                 }
                 if(object!=null&& object.getClass().getName().contains(page)){
+                    System.out.println(object.getClass().getName());
                     invokeMethod(object,"setUserCode",loginUser.getUsername());
                     invokeMethod(object,"setCreateUserId",loginUser.getUsername());
                     invokeMethod(object,"setUpdateUserId",loginUser.getUsername());
-                    invokeMethod(object,"setCreateTime", DateUtils.getTime());
-                    invokeMethod(object,"setUpdateTime",DateUtils.getTime());
+                    invokeMethodDate(object,"setCreateTime");
+                    invokeMethodDate(object,"setUpdateTime");
                 }
             }
         } catch (Exception e) {

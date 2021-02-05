@@ -6,7 +6,9 @@ import javax.annotation.PostConstruct;
 
 import com.ruoyi.system.common.SystemConst;
 import com.ruoyi.system.domain.AzArea;
+import com.ruoyi.system.domain.AzInterface;
 import com.ruoyi.system.service.IAzAreaService;
+import com.ruoyi.system.service.IAzInterfaceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,6 +38,8 @@ public class SysDictTypeServiceImpl implements ISysDictTypeService
 
     @Autowired
     private IAzAreaService areaService;
+    @Autowired
+    private IAzInterfaceService interfaceService;
     /**
      * 项目启动时，初始化字典到缓存
      */
@@ -95,6 +99,21 @@ public class SysDictTypeServiceImpl implements ISysDictTypeService
                    dictData.add(sysDictData);
                }
            }
+            return dictData;
+        }
+        if(SystemConst.INTERFACE_DATA.equals(dictType)){
+            List<SysDictData> dictData = new ArrayList<SysDictData>();
+            List<AzInterface>  azAreaList=  interfaceService.selectAzInterfaceList(new AzInterface());
+            if(azAreaList!=null && azAreaList.size()>0){
+                for(AzInterface azArea:azAreaList){
+                    SysDictData sysDictData=new SysDictData();
+                    sysDictData.setDictCode(azArea.getId());
+                    sysDictData.setDictValue(azArea.getId().toString());
+                    sysDictData.setDictLabel(azArea.getName());
+                    sysDictData.setDictSort(azArea.getId());
+                    dictData.add(sysDictData);
+                }
+            }
             return dictData;
         }
         List<SysDictData> dictDatas = DictUtils.getDictCache(dictType);

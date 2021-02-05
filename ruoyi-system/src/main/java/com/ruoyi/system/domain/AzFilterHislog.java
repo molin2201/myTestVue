@@ -47,7 +47,7 @@ public class AzFilterHislog extends BaseEntity
 
     /** 用户 */
     @Excel(name = "用户")
-    private Long userId;
+    private String userCode;
 
     public void setId(Long id) 
     {
@@ -112,14 +112,13 @@ public class AzFilterHislog extends BaseEntity
     {
         return areaIn;
     }
-    public void setUserId(Long userId) 
-    {
-        this.userId = userId;
+
+    public String getUserCode() {
+        return userCode;
     }
 
-    public Long getUserId() 
-    {
-        return userId;
+    public void setUserCode(String userCode) {
+        this.userCode = userCode;
     }
 
     @Override
@@ -132,7 +131,7 @@ public class AzFilterHislog extends BaseEntity
             .append("insertDate", getInsertDate())
             .append("interfaceId", getInterfaceId())
             .append("areaIn", getAreaIn())
-            .append("userId", getUserId())
+            .append("userCode", getUserCode())
             .toString();
     }
 }

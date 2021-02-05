@@ -21,7 +21,7 @@ public class AzUserAcount extends BaseEntity
 
     /** 用户 */
     @Excel(name = "用户")
-    private Long userId;
+    private String userCode;
 
     /** 余额 */
     @Excel(name = "余额")
@@ -48,16 +48,16 @@ public class AzUserAcount extends BaseEntity
     {
         return id;
     }
-    public void setUserId(Long userId) 
-    {
-        this.userId = userId;
+
+    public String getUserCode() {
+        return userCode;
     }
 
-    public Long getUserId() 
-    {
-        return userId;
+    public void setUserCode(String userCode) {
+        this.userCode = userCode;
     }
-    public void setBalAmt(BigDecimal balAmt) 
+
+    public void setBalAmt(BigDecimal balAmt)
     {
         this.balAmt = balAmt;
     }
@@ -98,7 +98,7 @@ public class AzUserAcount extends BaseEntity
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
             .append("id", getId())
-            .append("userId", getUserId())
+            .append("userCode", getUserCode())
             .append("balAmt", getBalAmt())
             .append("addAmt", getAddAmt())
             .append("consumeAmt", getConsumeAmt())

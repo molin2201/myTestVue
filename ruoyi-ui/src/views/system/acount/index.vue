@@ -1,15 +1,8 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="用户" prop="userId">
-        <el-select v-model="queryParams.userId" placeholder="请选择用户" clearable size="small">
-          <el-option
-            v-for="dict in userIdOptions"
-            :key="dict.dictValue"
-            :label="dict.dictLabel"
-            :value="dict.dictValue"
-          />
-        </el-select>
+      <el-form-item label="用户" prop="userCode">
+        <el-input v-model="form.userCode" placeholder="请输入用户" />
       </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
@@ -66,7 +59,7 @@
     <el-table v-loading="loading" :data="acountList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="主键" align="center" prop="id" />
-      <el-table-column label="用户" align="center" prop="userId" :formatter="userIdFormat" />
+      <el-table-column label="用户" align="center" prop="userCode"  />
       <el-table-column label="余额" align="center" prop="balAmt" />
       <el-table-column label="充值总金额" align="center" prop="addAmt" />
       <el-table-column label="消费总金额" align="center" prop="consumeAmt" />
@@ -90,7 +83,7 @@
         </template>
       </el-table-column>
     </el-table>
-    
+
     <pagination
       v-show="total>0"
       :total="total"
@@ -102,15 +95,9 @@
     <!-- 添加或修改用户账户对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="用户" prop="userId">
-          <el-select v-model="form.userId" placeholder="请选择用户">
-            <el-option
-              v-for="dict in userIdOptions"
-              :key="dict.dictValue"
-              :label="dict.dictLabel"
-              :value="parseInt(dict.dictValue)"
-            ></el-option>
-          </el-select>
+        <el-form-item label="用户" prop="userCode">
+          <el-input v-model="form.userCode" placeholder="请输入用户" />
+
         </el-form-item>
         <el-form-item label="余额" prop="balAmt">
           <el-input v-model="form.balAmt" placeholder="请输入余额" />
@@ -191,10 +178,7 @@ export default {
         this.loading = false;
       });
     },
-    // 用户字典翻译
-    userIdFormat(row, column) {
-      return this.selectDictLabel(this.userIdOptions, row.userId);
-    },
+
     // 取消按钮
     cancel() {
       this.open = false;

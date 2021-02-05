@@ -33,11 +33,11 @@ public class AzAddamtHis extends BaseEntity
 
     /** 充值人 */
     @Excel(name = "充值人")
-    private Long createUserId;
+    private String userCode;
 
     /** 操作人 */
     @Excel(name = "操作人")
-    private Long optUserId;
+    private String createUserId;
 
     /** 接口ID */
     @Excel(name = "接口ID")
@@ -91,25 +91,24 @@ public class AzAddamtHis extends BaseEntity
     {
         return amt;
     }
-    public void setCreateUserId(Long createUserId) 
-    {
+
+    public String getUserCode() {
+        return userCode;
+    }
+
+    public void setUserCode(String userCode) {
+        this.userCode = userCode;
+    }
+
+    public String getCreateUserId() {
+        return createUserId;
+    }
+
+    public void setCreateUserId(String createUserId) {
         this.createUserId = createUserId;
     }
 
-    public Long getCreateUserId() 
-    {
-        return createUserId;
-    }
-    public void setOptUserId(Long optUserId) 
-    {
-        this.optUserId = optUserId;
-    }
-
-    public Long getOptUserId() 
-    {
-        return optUserId;
-    }
-    public void setInterfaceId(String interfaceId) 
+    public void setInterfaceId(String interfaceId)
     {
         this.interfaceId = interfaceId;
     }
@@ -156,7 +155,7 @@ public class AzAddamtHis extends BaseEntity
             .append("amt", getAmt())
             .append("createUserId", getCreateUserId())
             .append("remark", getRemark())
-            .append("optUserId", getOptUserId())
+            .append("userCode", getUserCode())
             .append("interfaceId", getInterfaceId())
             .append("payType", getPayType())
             .append("orderNo", getOrderNo())

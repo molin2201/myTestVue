@@ -12,11 +12,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="insertDate"    column="insert_date"    />
         <result property="interfaceId"    column="interface_id"    />
         <result property="areaIn"    column="area_in"    />
-        <result property="userId"    column="user_id"    />
+        <result property="userCode"    column="user_code"    />
     </resultMap>
 
     <sql id="selectAzFilterHislogVo">
-        select id, filter_type, req_count, filter_count, insert_date, interface_id, area_in, user_id from az_filter_hislog
+        select id, filter_type, req_count, filter_count, insert_date, interface_id, area_in, user_code from az_filter_hislog
     </sql>
 
     <select id="selectAzFilterHislogList" parameterType="AzFilterHislog" resultMap="AzFilterHislogResult">
@@ -26,7 +26,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="params.beginInsertDate != null and params.beginInsertDate != '' and params.endInsertDate != null and params.endInsertDate != ''"> and insert_date between #{params.beginInsertDate} and #{params.endInsertDate}</if>
             <if test="interfaceId != null  and interfaceId != ''"> and interface_id = #{interfaceId}</if>
             <if test="areaIn != null  and areaIn != ''"> and area_in = #{areaIn}</if>
-            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="userCode != null "> and user_code = #{userCode}</if>
         </where>
     </select>
     
@@ -44,7 +44,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="insertDate != null">insert_date,</if>
             <if test="interfaceId != null">interface_id,</if>
             <if test="areaIn != null">area_in,</if>
-            <if test="userId != null">user_id,</if>
+            <if test="userCode != null">user_code,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="filterType != null">#{filterType},</if>
@@ -53,7 +53,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="insertDate != null">#{insertDate},</if>
             <if test="interfaceId != null">#{interfaceId},</if>
             <if test="areaIn != null">#{areaIn},</if>
-            <if test="userId != null">#{userId},</if>
+            <if test="userCode != null">#{userCode},</if>
          </trim>
     </insert>
 
@@ -66,7 +66,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="insertDate != null">insert_date = #{insertDate},</if>
             <if test="interfaceId != null">interface_id = #{interfaceId},</if>
             <if test="areaIn != null">area_in = #{areaIn},</if>
-            <if test="userId != null">user_id = #{userId},</if>
+            <if test="userCode != null">user_id = #{userCode},</if>
         </trim>
         where id = #{id}
     </update>

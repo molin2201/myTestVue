@@ -40,7 +40,7 @@ public class AzPhoneBlack extends BaseEntity
 
     /** 创建人 */
     @Excel(name = "创建人")
-    private Long createUserId;
+    private String createUserId;
 
     public void setId(Long id) 
     {
@@ -96,14 +96,13 @@ public class AzPhoneBlack extends BaseEntity
     {
         return phoneType;
     }
-    public void setCreateUserId(Long createUserId) 
-    {
-        this.createUserId = createUserId;
+
+    public String getCreateUserId() {
+        return createUserId;
     }
 
-    public Long getCreateUserId() 
-    {
-        return createUserId;
+    public void setCreateUserId(String createUserId) {
+        this.createUserId = createUserId;
     }
 
     @Override

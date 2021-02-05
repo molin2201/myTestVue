@@ -6,7 +6,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     
     <resultMap type="AzUserAcount" id="AzUserAcountResult">
         <result property="id"    column="id"    />
-        <result property="userId"    column="user_id"    />
+        <result property="userCode"    column="user_code"    />
         <result property="balAmt"    column="bal_amt"    />
         <result property="addAmt"    column="add_amt"    />
         <result property="consumeAmt"    column="consume_amt"    />
@@ -15,13 +15,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectAzUserAcountVo">
-        select id, user_id, bal_amt, add_amt, consume_amt, profit_amt, update_time from az_user_acount
+        select id, user_code, bal_amt, add_amt, consume_amt, profit_amt, update_time from az_user_acount
     </sql>
 
     <select id="selectAzUserAcountList" parameterType="AzUserAcount" resultMap="AzUserAcountResult">
         <include refid="selectAzUserAcountVo"/>
         <where>  
-            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="userCode != null "> and user_code = #{userCode}</if>
         </where>
     </select>
     
@@ -33,7 +33,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <insert id="insertAzUserAcount" parameterType="AzUserAcount" useGeneratedKeys="true" keyProperty="id">
         insert into az_user_acount
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="userId != null">user_id,</if>
+            <if test="userCode != null">user_code,</if>
             <if test="balAmt != null">bal_amt,</if>
             <if test="addAmt != null">add_amt,</if>
             <if test="consumeAmt != null">consume_amt,</if>
@@ -41,7 +41,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="updateTime != null">update_time,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="userId != null">#{userId},</if>
+            <if test="userCode != null">#{userCode},</if>
             <if test="balAmt != null">#{balAmt},</if>
             <if test="addAmt != null">#{addAmt},</if>
             <if test="consumeAmt != null">#{consumeAmt},</if>
@@ -53,7 +53,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <update id="updateAzUserAcount" parameterType="AzUserAcount">
         update az_user_acount
         <trim prefix="SET" suffixOverrides=",">
-            <if test="userId != null">user_id = #{userId},</if>
+            <if test="userCode != null">user_code = #{userCode},</if>
             <if test="balAmt != null">bal_amt = #{balAmt},</if>
             <if test="addAmt != null">add_amt = #{addAmt},</if>
             <if test="consumeAmt != null">consume_amt = #{consumeAmt},</if>

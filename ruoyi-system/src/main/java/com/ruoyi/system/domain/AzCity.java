@@ -48,7 +48,7 @@ public class AzCity extends BaseEntity
 
     /** 更新人 */
     @Excel(name = "更新人")
-    private Long updateUserId;
+    private String updateUserId;
 
     public void setId(Long id) 
     {
@@ -122,14 +122,13 @@ public class AzCity extends BaseEntity
     {
         return areaName;
     }
-    public void setUpdateUserId(Long updateUserId) 
-    {
-        this.updateUserId = updateUserId;
+
+    public String getUpdateUserId() {
+        return updateUserId;
     }
 
-    public Long getUpdateUserId() 
-    {
-        return updateUserId;
+    public void setUpdateUserId(String updateUserId) {
+        this.updateUserId = updateUserId;
     }
 
     @Override

@@ -32,7 +32,7 @@ public class AzArea extends BaseEntity
 
     /** 创建人 */
     @Excel(name = "创建人")
-    private Long updateUserId;
+    private String updateUserId;
 
     public void setId(Long id) 
     {
@@ -70,14 +70,13 @@ public class AzArea extends BaseEntity
     {
         return name;
     }
-    public void setUpdateUserId(Long updateUserId) 
-    {
-        this.updateUserId = updateUserId;
+
+    public String getUpdateUserId() {
+        return updateUserId;
     }
 
-    public Long getUpdateUserId() 
-    {
-        return updateUserId;
+    public void setUpdateUserId(String updateUserId) {
+        this.updateUserId = updateUserId;
     }
 
     @Override

@@ -127,7 +127,7 @@
 
     <el-table v-loading="loading" :data="cityList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="更新人" align="center" prop="id" />
+      <el-table-column label="主键" align="center" prop="id" />
       <el-table-column label="地区区号" align="center" prop="areaCode" />
       <el-table-column label="省份" align="center" prop="province" />
       <el-table-column label="城市" align="center" prop="city" />
@@ -155,7 +155,7 @@
         </template>
       </el-table-column>
     </el-table>
-    
+
     <pagination
       v-show="total>0"
       :total="total"
@@ -187,9 +187,6 @@
         </el-form-item>
         <el-form-item label="地区名称" prop="areaName">
           <el-input v-model="form.areaName" placeholder="请输入地区名称" />
-        </el-form-item>
-        <el-form-item label="更新人" prop="updateUserId">
-          <el-input v-model="form.updateUserId" placeholder="请输入更新人" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">

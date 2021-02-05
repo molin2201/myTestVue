@@ -52,7 +52,7 @@ public class AzRule extends BaseEntity
 
     /** 创建人 */
     @Excel(name = "创建人")
-    private Long createUserId;
+    private String createUserId;
 
     /** 是否启用 */
     @Excel(name = "是否启用")
@@ -139,16 +139,16 @@ public class AzRule extends BaseEntity
     {
         return field2;
     }
-    public void setCreateUserId(Long createUserId) 
-    {
+
+    public String getCreateUserId() {
+        return createUserId;
+    }
+
+    public void setCreateUserId(String createUserId) {
         this.createUserId = createUserId;
     }
 
-    public Long getCreateUserId() 
-    {
-        return createUserId;
-    }
-    public void setStatus(String status) 
+    public void setStatus(String status)
     {
         this.status = status;
     }

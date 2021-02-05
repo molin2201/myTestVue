@@ -135,7 +135,7 @@
         </template>
       </el-table-column>
     </el-table>
-    
+
     <pagination
       v-show="total>0"
       :total="total"
@@ -190,9 +190,7 @@
             ></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="创建人" prop="createUserId">
-          <el-input v-model="form.createUserId" placeholder="请输入创建人" />
-        </el-form-item>
+
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确 定</el-button>

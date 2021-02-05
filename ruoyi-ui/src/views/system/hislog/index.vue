@@ -24,13 +24,14 @@
         ></el-date-picker>
       </el-form-item>
       <el-form-item label="接口" prop="interfaceId">
-        <el-input
-          v-model="queryParams.interfaceId"
-          placeholder="请输入接口"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
+        <el-select v-model="queryParams.interfaceId" placeholder="请选择接口ID" clearable size="small">
+          <el-option
+            v-for="dict in interfaceIdOptions"
+            :key="dict.dictValue"
+            :label="dict.dictLabel"
+            :value="dict.dictValue"
+          />
+        </el-select>
       </el-form-item>
       <el-form-item label="地区" prop="areaIn">
         <el-select v-model="queryParams.areaIn" placeholder="请选择地区" clearable size="small">
@@ -42,15 +43,14 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="用户" prop="userId">
-        <el-select v-model="queryParams.userId" placeholder="请选择用户" clearable size="small">
-          <el-option
-            v-for="dict in userIdOptions"
-            :key="dict.dictValue"
-            :label="dict.dictLabel"
-            :value="dict.dictValue"
-          />
-        </el-select>
+      <el-form-item label="用户" prop="userCode">
+        <el-input
+          v-model="queryParams.userCode"
+          placeholder="请输入用户"
+          clearable
+          size="small"
+          @keyup.enter.native="handleQuery"
+        />
       </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
@@ -115,9 +115,9 @@
           <span>{{ parseTime(scope.row.insertDate, '{y}-{m}-{d}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="接口" align="center" prop="interfaceId" />
+      <el-table-column label="接口" align="center" prop="interfaceId" :formatter="interfaceIdFormat"/>
       <el-table-column label="地区" align="center" prop="areaIn" :formatter="areaInFormat" />
-      <el-table-column label="用户" align="center" prop="userId" :formatter="userIdFormat" />
+      <el-table-column label="用户" align="center" prop="userCode" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -137,7 +137,7 @@
         </template>
       </el-table-column>
     </el-table>
-    
+
     <pagination
       v-show="total>0"
       :total="total"
@@ -174,7 +174,14 @@
           </el-date-picker>
         </el-form-item>
         <el-form-item label="接口" prop="interfaceId">
-          <el-input v-model="form.interfaceId" placeholder="请输入接口" />
+          <el-select v-model="form.interfaceId" placeholder="请选择接口ID">
+            <el-option
+              v-for="dict in interfaceIdOptions"
+              :key="dict.dictValue"
+              :label="dict.dictLabel"
+              :value="dict.dictValue"
+            ></el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="地区" prop="areaIn">
           <el-select v-model="form.areaIn" placeholder="请选择地区">
@@ -186,15 +193,8 @@
             ></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="用户" prop="userId">
-          <el-select v-model="form.userId" placeholder="请选择用户">
-            <el-option
-              v-for="dict in userIdOptions"
-              :key="dict.dictValue"
-              :label="dict.dictLabel"
-              :value="parseInt(dict.dictValue)"
-            ></el-option>
-          </el-select>
+        <el-form-item label="用户" prop="userCode">
+          <el-input v-model="form.userCode" placeholder="请输入用户" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -236,10 +236,11 @@ export default {
       filterTypeOptions: [],
       // 日期时间范围
       daterangeInsertDate: [],
+      // 接口ID字典
+      interfaceIdOptions: [],
       // 地区字典
       areaInOptions: [],
-      // 用户字典
-      userIdOptions: [],
+
       // 查询参数
       queryParams: {
         pageNum: 1,
@@ -248,7 +249,7 @@ export default {
         insertDate: null,
         interfaceId: null,
         areaIn: null,
-        userId: null
+        userCode: null
       },
       // 表单参数
       form: {},
@@ -259,14 +260,14 @@ export default {
   },
   created() {
     this.getList();
+    this.getDicts("az_interfacedata").then(response => {
+      this.interfaceIdOptions = response.data;
+    });
     this.getDicts("az_filter_type").then(response => {
       this.filterTypeOptions = response.data;
     });
-    this.getDicts("sz_area_type").then(response => {
+    this.getDicts("az_areadata").then(response => {
       this.areaInOptions = response.data;
-    });
-    this.getDicts("sz_area_type").then(response => {
-      this.userIdOptions = response.data;
     });
   },
   methods: {
@@ -284,6 +285,10 @@ export default {
         this.loading = false;
       });
     },
+    // 接口ID字典翻译
+    interfaceIdFormat(row, column) {
+      return this.selectDictLabel(this.interfaceIdOptions, row.interfaceId);
+    },
     // 拦截类型字典翻译
     filterTypeFormat(row, column) {
       return this.selectDictLabel(this.filterTypeOptions, row.filterType);
@@ -292,10 +297,7 @@ export default {
     areaInFormat(row, column) {
       return this.selectDictLabel(this.areaInOptions, row.areaIn);
     },
-    // 用户字典翻译
-    userIdFormat(row, column) {
-      return this.selectDictLabel(this.userIdOptions, row.userId);
-    },
+
     // 取消按钮
     cancel() {
       this.open = false;
@@ -311,7 +313,7 @@ export default {
         insertDate: null,
         interfaceId: null,
         areaIn: null,
-        userId: null
+        userCode: null
       };
       this.resetForm("form");
     },

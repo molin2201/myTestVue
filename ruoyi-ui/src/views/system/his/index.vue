@@ -13,10 +13,10 @@
           end-placeholder="结束日期"
         ></el-date-picker>
       </el-form-item>
-      <el-form-item label="操作人" prop="optUserId">
+      <el-form-item label="充值用户" prop="userCode">
         <el-input
-          v-model="queryParams.optUserId"
-          placeholder="请输入操作人"
+          v-model="queryParams.userCode"
+          placeholder="请输入充值用户"
           clearable
           size="small"
           @keyup.enter.native="handleQuery"
@@ -106,7 +106,7 @@
       <el-table-column label="总价" align="center" prop="amt" />
       <el-table-column label="充值人" align="center" prop="createUserId" />
       <el-table-column label="说明" align="center" prop="remark" />
-      <el-table-column label="操作人" align="center" prop="optUserId" />
+      <el-table-column label="操作人" align="center" prop="userCode" />
       <el-table-column label="接口ID" align="center" prop="interfaceId" :formatter="interfaceIdFormat" />
       <el-table-column label="支付方式" align="center" prop="payType" :formatter="payTypeFormat" />
       <el-table-column label="订单号" align="center" prop="orderNo" />
@@ -130,7 +130,7 @@
         </template>
       </el-table-column>
     </el-table>
-    
+
     <pagination
       v-show="total>0"
       :total="total"
@@ -157,8 +157,8 @@
         <el-form-item label="说明" prop="remark">
           <el-input v-model="form.remark" placeholder="请输入说明" />
         </el-form-item>
-        <el-form-item label="操作人" prop="optUserId">
-          <el-input v-model="form.optUserId" placeholder="请输入操作人" />
+        <el-form-item label="操作人" prop="userCode">
+          <el-input v-model="form.userCode" placeholder="请输入操作人" />
         </el-form-item>
         <el-form-item label="接口ID" prop="interfaceId">
           <el-select v-model="form.interfaceId" placeholder="请选择接口ID">
@@ -242,7 +242,7 @@ export default {
         pageNum: 1,
         pageSize: 10,
         createTime: null,
-        optUserId: null,
+        userCode: null,
         interfaceId: null,
         orderNo: null,
       },
@@ -255,7 +255,7 @@ export default {
   },
   created() {
     this.getList();
-    this.getDicts("sys_blackphone_type").then(response => {
+    this.getDicts("az_interfacedata").then(response => {
       this.interfaceIdOptions = response.data;
     });
     this.getDicts("sys_pay_type").then(response => {
@@ -307,7 +307,7 @@ export default {
         amt: null,
         createUserId: null,
         remark: null,
-        optUserId: null,
+        userCode: null,
         interfaceId: null,
         payType: null,
         orderNo: null,

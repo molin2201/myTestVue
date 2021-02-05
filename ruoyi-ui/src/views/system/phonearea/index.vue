@@ -30,10 +30,10 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="创建人" prop="updateUserId">
+      <el-form-item label="更新人" prop="updateUserId">
         <el-input
           v-model="queryParams.updateUserId"
-          placeholder="请输入创建人"
+          placeholder="请输入更新人"
           clearable
           size="small"
           @keyup.enter.native="handleQuery"
@@ -93,7 +93,7 @@
 
     <el-table v-loading="loading" :data="phoneareaList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="创建人" align="center" prop="id" />
+      <el-table-column label="主键" align="center" prop="id" />
       <el-table-column label="手机前缀" align="center" prop="prePhone" />
       <el-table-column label="地区区号" align="center" prop="areaCode" :formatter="areaCodeFormat" />
       <el-table-column label="运营商" align="center" prop="company" :formatter="companyFormat" />
@@ -103,7 +103,6 @@
           <span>{{ parseTime(scope.row.updateTime, '{y}-{m}-{d}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="更新人" align="center" prop="updateUserId" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button

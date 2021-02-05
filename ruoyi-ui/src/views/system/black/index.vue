@@ -63,14 +63,13 @@
         ></el-date-picker>
       </el-form-item>
       <el-form-item label="创建人" prop="createUserId">
-        <el-select v-model="queryParams.createUserId" placeholder="请选择创建人" clearable size="small">
-          <el-option
-            v-for="dict in createUserIdOptions"
-            :key="dict.dictValue"
-            :label="dict.dictLabel"
-            :value="dict.dictValue"
-          />
-        </el-select>
+        <el-input
+          v-model="queryParams.createUserId"
+          placeholder="请输入创建人"
+          clearable
+          size="small"
+          @keyup.enter.native="handleQuery"
+        />
       </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
@@ -126,13 +125,13 @@
 
     <el-table v-loading="loading" :data="blackList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="创建人" align="center" prop="id" />
+      <el-table-column label="主键" align="center" prop="id" />
       <el-table-column label="电话" align="center" prop="phone" />
       <el-table-column label="状态" align="center" prop="status" :formatter="statusFormat" />
       <el-table-column label="来源" align="center" prop="source" :formatter="sourceFormat" />
       <el-table-column label="类型" align="center" prop="dbType" :formatter="dbTypeFormat" />
       <el-table-column label="号码类型" align="center" prop="phoneType" :formatter="phoneTypeFormat" />
-      <el-table-column label="创建人" align="center" prop="createUserId" :formatter="createUserIdFormat" />
+      <el-table-column label="创建人" align="center" prop="createUserId"  />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -152,7 +151,7 @@
         </template>
       </el-table-column>
     </el-table>
-    
+
     <pagination
       v-show="total>0"
       :total="total"
@@ -200,16 +199,6 @@
           <el-select v-model="form.phoneType" placeholder="请选择号码类型">
             <el-option
               v-for="dict in phoneTypeOptions"
-              :key="dict.dictValue"
-              :label="dict.dictLabel"
-              :value="parseInt(dict.dictValue)"
-            ></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="创建人" prop="createUserId">
-          <el-select v-model="form.createUserId" placeholder="请选择创建人">
-            <el-option
-              v-for="dict in createUserIdOptions"
               :key="dict.dictValue"
               :label="dict.dictLabel"
               :value="parseInt(dict.dictValue)"
@@ -332,10 +321,7 @@ export default {
     phoneTypeFormat(row, column) {
       return this.selectDictLabel(this.phoneTypeOptions, row.phoneType);
     },
-    // 创建人字典翻译
-    createUserIdFormat(row, column) {
-      return this.selectDictLabel(this.createUserIdOptions, row.createUserId);
-    },
+
     // 取消按钮
     cancel() {
       this.open = false;
