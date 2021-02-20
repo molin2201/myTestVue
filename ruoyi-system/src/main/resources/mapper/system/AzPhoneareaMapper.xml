@@ -29,13 +29,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="updateUserId != null and updateUserId != ''"> and update_user_id = #{updateUserId}</if>
             <if test="params.areaCodes != null">
                 and area_code in
-                <foreach item="params.areaCodes" collection="array" open="(" separator="," close=")">
+                <foreach item="id" collection="params.areaCodes" open="(" separator="," close=")">
                     #{id}
                 </foreach>
             </if>
             <if test="params.companys != null">
                 and company in
-                <foreach item="params.companys" collection="array" open="(" separator="," close=")">
+                <foreach item="id" collection="params.companys" open="(" separator="," close=")">
                     #{id}
                 </foreach>
             </if>

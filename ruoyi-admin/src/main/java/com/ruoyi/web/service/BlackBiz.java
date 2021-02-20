@@ -118,6 +118,9 @@ public class BlackBiz {
         if(interfaceList!=null && interfaceList.size()>0){
            Map<String, AzRuleVo> userRule=new HashMap<String,AzRuleVo>();
             for(AzRule azRuleTemp:interfaceList){
+                if(StringUtils.isEmpty(azRuleTemp.getCreateUserId())){
+                    continue;
+                }
                 if(userRule.containsKey(azRuleTemp.getCreateUserId())){
                     AzRuleVo  azRuleVo  =   userRule.get(azRuleTemp.getCreateUserId());
                     azRuleVo.getAreas().addAll(toList(azRuleTemp.getAreaId()));

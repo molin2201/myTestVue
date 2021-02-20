@@ -1,8 +1,13 @@
 package com.ruoyi.system.domain.vo;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class AzRuleVo {
+/**
+ * @author molin
+ */
+public class AzRuleVo implements Serializable {
+
     private String userCode;
     private List<String> phonePattern;
     private List<String> areas;

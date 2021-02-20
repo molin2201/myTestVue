@@ -9,6 +9,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="name"    column="name"    />
         <result property="address"    column="address"    />
         <result property="hitCount"    column="hit_count"    />
+        <result property="callCount"    column="call_count"    />
         <result property="userCount"    column="user_count"    />
         <result property="balCount"    column="bal_count"    />
         <result property="rateAmt"    column="rate_amt"    />
@@ -19,7 +20,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectAzInterfaceVo">
-        select id, name, address, hit_count, user_count, bal_count, rate_amt, status, create_time, timeout, version from az_interface
+        select id, `name`, call_count,address, hit_count, user_count, bal_count, rate_amt, status, create_time, timeout, version from az_interface
     </sql>
 
     <select id="selectAzInterfaceList" parameterType="AzInterface" resultMap="AzInterfaceResult">
@@ -43,6 +44,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="name != null">name,</if>
             <if test="address != null">address,</if>
             <if test="hitCount != null">hit_count,</if>
+            <if test="callCount != null">call_count,</if>
             <if test="userCount != null">user_count,</if>
             <if test="balCount != null">bal_count,</if>
             <if test="rateAmt != null">rate_amt,</if>
@@ -55,6 +57,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="name != null">#{name},</if>
             <if test="address != null">#{address},</if>
             <if test="hitCount != null">#{hitCount},</if>
+            <if test="callCount != null">#{callCount},</if>
             <if test="userCount != null">#{userCount},</if>
             <if test="balCount != null">#{balCount},</if>
             <if test="rateAmt != null">#{rateAmt},</if>
@@ -71,6 +74,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="name != null">name = #{name},</if>
             <if test="address != null">address = #{address},</if>
             <if test="hitCount != null">hit_count = #{hitCount},</if>
+            <if test="callCount != null">call_count = #{callCount}, </if>
             <if test="userCount != null">user_count = #{userCount},</if>
             <if test="balCount != null">bal_count = #{balCount},</if>
             <if test="rateAmt != null">rate_amt = #{rateAmt},</if>
