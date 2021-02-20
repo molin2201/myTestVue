@@ -11,6 +11,9 @@ import com.ruoyi.system.domain.AzPhoneWhite;
  */
 public interface IAzPhoneWhiteService 
 {
+
+    public void updateImportByIds(List<Long> idsList);
+
     /**
      * 查询白名单
      * 

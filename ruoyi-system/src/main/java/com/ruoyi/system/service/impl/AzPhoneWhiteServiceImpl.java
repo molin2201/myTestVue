@@ -20,6 +20,10 @@ public class AzPhoneWhiteServiceImpl implements IAzPhoneWhiteService
     @Autowired
     private AzPhoneWhiteMapper azPhoneWhiteMapper;
 
+    @Override
+    public void updateImportByIds(List<Long> idsList){
+        azPhoneWhiteMapper.updateImportByIds(idsList);
+    }
     /**
      * 查询白名单
      * 

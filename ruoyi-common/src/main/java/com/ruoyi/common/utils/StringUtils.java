@@ -1,11 +1,9 @@
 package com.ruoyi.common.utils;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import com.ruoyi.common.core.text.StrFormatter;
 
 /**
@@ -455,5 +453,30 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils
     public static <T> T cast(Object obj)
     {
         return (T) obj;
+    }
+
+    public static boolean checkByRule(String str,String ruleKey){
+          Pattern r = Pattern.compile(mathRule().get(ruleKey));
+          Matcher    m = r.matcher(str);
+          return m.find();
+    }
+
+    public static Map<String,String> mathRule(){
+        Map<String,String> mathRule = new HashMap<String,String>();
+        mathRule.put("AAABBB","　 ([\\d])\\1{2}([\\d])\\2{2}");
+        mathRule.put("AAA","([\\d])\\1{2,}");
+        mathRule.put("AAAA","([\\d])\\1{3,}");
+        mathRule.put("AAAAA","([\\d])\\1{4,}");
+        mathRule.put("AAAAAA","([\\d])\\1{5,}");
+        mathRule.put("AAAAAAA","([\\d])\\1{6,}");
+        mathRule.put("AAAAAAAA","([\\d])\\1{7,}");
+        mathRule.put("ABCABC","(?:0(?=1)|1(?=2)|2(?=3)|3(?=4)|4(?=5)|5(?=6)|6(?=7)|7(?=8)|8(?=9)){2}\\d(?:0(?=1)|1(?=2)|2(?=3)|3(?=4)|4(?=5)|5(?=6)|6(?=7)|7(?=8)|8(?=9)){2}\\d");
+        mathRule.put("ABCDABCD","(?:0(?=1)|1(?=2)|2(?=3)|3(?=4)|4(?=5)|5(?=6)|6(?=7)|7(?=8)|8(?=9)){3}\\d(?:0(?=1)|1(?=2)|2(?=3)|3(?=4)|4(?=5)|5(?=6)|6(?=7)|7(?=8)|8(?=9)){3}\\d");
+        mathRule.put("ABCDEFGH","(?:(?:0(?=1)|1(?=2)|2(?=3)|3(?=4)|4(?=5)|5(?=6)|6(?=7)|7(?=8)|8(?=9)){7}|(?:9(?=8)|8(?=7)|7(?=6)|6(?=5)|5(?=4)|4(?=3)|3(?=2)|2(?=1)|1(?=0)){7})\\d");
+        mathRule.put("ABCDEFG","(?:(?:0(?=1)|1(?=2)|2(?=3)|3(?=4)|4(?=5)|5(?=6)|6(?=7)|7(?=8)|8(?=9)){6}|(?:9(?=8)|8(?=7)|7(?=6)|6(?=5)|5(?=4)|4(?=3)|3(?=2)|2(?=1)|1(?=0)){6})\\d");
+        mathRule.put("ABCDEF","(?:(?:0(?=1)|1(?=2)|2(?=3)|3(?=4)|4(?=5)|5(?=6)|6(?=7)|7(?=8)|8(?=9)){5}|(?:9(?=8)|8(?=7)|7(?=6)|6(?=5)|5(?=4)|4(?=3)|3(?=2)|2(?=1)|1(?=0)){5})\\d");
+        mathRule.put("ABCDE","(?:(?:0(?=1)|1(?=2)|2(?=3)|3(?=4)|4(?=5)|5(?=6)|6(?=7)|7(?=8)|8(?=9)){4}|(?:9(?=8)|8(?=7)|7(?=6)|6(?=5)|5(?=4)|4(?=3)|3(?=2)|2(?=1)|1(?=0)){4})\\d");
+        mathRule.put("ABCD","(?:(?:0(?=1)|1(?=2)|2(?=3)|3(?=4)|4(?=5)|5(?=6)|6(?=7)|7(?=8)|8(?=9)){3}|(?:9(?=8)|8(?=7)|7(?=6)|6(?=5)|5(?=4)|4(?=3)|3(?=2)|2(?=1)|1(?=0)){3})\\d");
+        return mathRule;
     }
 }

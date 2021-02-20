@@ -26,6 +26,7 @@ public interface IAzPhoneBlackService
      * @return 黑名单集合
      */
     public List<AzPhoneBlack> selectAzPhoneBlackList(AzPhoneBlack azPhoneBlack);
+    public void updateImportByIds(List<Long> idsList);
 
     /**
      * 新增黑名单

@@ -1,33 +1,35 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="appId编码" prop="postCode">
+    <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="98px">
+      <el-form-item label="被叫电话" prop="phone">
         <el-input
-          v-model="queryParams.postCode"
-          placeholder="请输入appId编码"
+          v-model="queryParams.phone"
+          placeholder="请输入被叫电话"
           clearable
           size="small"
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="appId名称" prop="postName">
+      <el-form-item label="最后外呼时间" >
+        <el-date-picker
+          v-model="daterangeUpdateTime"
+          size="small"
+          style="width: 240px"
+          value-format="yyyy-MM-dd"
+          type="daterange"
+          range-separator="-"
+          start-placeholder="开始日期"
+          end-placeholder="结束日期"
+        ></el-date-picker>
+      </el-form-item>
+      <el-form-item label="使用用户" prop="updateUserId">
         <el-input
-          v-model="queryParams.postName"
-          placeholder="请输入appId名称"
+          v-model="queryParams.updateUserId"
+          placeholder="请输入使用用户"
           clearable
           size="small"
           @keyup.enter.native="handleQuery"
         />
-      </el-form-item>
-      <el-form-item label="状态" prop="status">
-        <el-select v-model="queryParams.status" placeholder="appId状态" clearable size="small">
-          <el-option
-            v-for="dict in statusOptions"
-            :key="dict.dictValue"
-            :label="dict.dictLabel"
-            :value="dict.dictValue"
-          />
-        </el-select>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
@@ -43,7 +45,7 @@
           icon="el-icon-plus"
           size="mini"
           @click="handleAdd"
-          v-hasPermi="['system:post:add']"
+          v-hasPermi="['system:callhis:add']"
         >新增</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -54,7 +56,7 @@
           size="mini"
           :disabled="single"
           @click="handleUpdate"
-          v-hasPermi="['system:post:edit']"
+          v-hasPermi="['system:callhis:edit']"
         >修改</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -65,7 +67,7 @@
           size="mini"
           :disabled="multiple"
           @click="handleDelete"
-          v-hasPermi="['system:post:remove']"
+          v-hasPermi="['system:callhis:remove']"
         >删除</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -75,24 +77,22 @@
           icon="el-icon-download"
           size="mini"
           @click="handleExport"
-          v-hasPermi="['system:post:export']"
+          v-hasPermi="['system:callhis:export']"
         >导出</el-button>
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
-    <el-table v-loading="loading" :data="postList" @selection-change="handleSelectionChange">
+    <el-table v-loading="loading" :data="callhisList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="appId编号" align="center" prop="postId" />
-      <el-table-column label="appId编码" align="center" prop="postCode" />
-      <el-table-column label="appId名称" align="center" prop="postName" />
-      <el-table-column label="appId排序" align="center" prop="postSort" />
-      <el-table-column label="状态" align="center" prop="status" :formatter="statusFormat" />
-      <el-table-column label="创建时间" align="center" prop="createTime" width="180">
+      <el-table-column label="主键" align="center" prop="id" />
+      <el-table-column label="被叫电话" align="center" prop="phone" />
+      <el-table-column label="最后外呼时间" align="center" prop="updateTime" width="180">
         <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.createTime) }}</span>
+          <span>{{ parseTime(scope.row.updateTime, '{y}-{m}-{d}') }}</span>
         </template>
       </el-table-column>
+      <el-table-column label="使用用户" align="center" prop="updateUserId" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -100,14 +100,14 @@
             type="text"
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
-            v-hasPermi="['system:post:edit']"
+            v-hasPermi="['system:callhis:edit']"
           >修改</el-button>
           <el-button
             size="mini"
             type="text"
             icon="el-icon-delete"
             @click="handleDelete(scope.row)"
-            v-hasPermi="['system:post:remove']"
+            v-hasPermi="['system:callhis:remove']"
           >删除</el-button>
         </template>
       </el-table-column>
@@ -121,29 +121,11 @@
       @pagination="getList"
     />
 
-    <!-- 添加或修改岗位对话框 -->
+    <!-- 添加或修改外呼记录对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="appId名称" prop="postName">
-          <el-input v-model="form.postName" placeholder="请输入appId名称" />
-        </el-form-item>
-        <el-form-item label="appId编码" prop="postCode">
-          <el-input v-model="form.postCode" placeholder="请输入编码名称" />
-        </el-form-item>
-        <el-form-item label="appId顺序" prop="postSort">
-          <el-input-number v-model="form.postSort" controls-position="right" :min="0" />
-        </el-form-item>
-        <el-form-item label="appId状态" prop="status">
-          <el-radio-group v-model="form.status">
-            <el-radio
-              v-for="dict in statusOptions"
-              :key="dict.dictValue"
-              :label="dict.dictValue"
-            >{{dict.dictLabel}}</el-radio>
-          </el-radio-group>
-        </el-form-item>
-        <el-form-item label="备注" prop="remark">
-          <el-input v-model="form.remark" type="textarea" placeholder="请输入内容" />
+        <el-form-item label="被叫电话" prop="phone">
+          <el-input v-model="form.phone" placeholder="请输入被叫电话" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -155,10 +137,12 @@
 </template>
 
 <script>
-import { listPost, getPost, delPost, addPost, updatePost, exportPost } from "@/api/system/post";
+import { listCallhis, getCallhis, delCallhis, addCallhis, updateCallhis, exportCallhis } from "@/api/system/callhis";
 
 export default {
-  name: "Post",
+  name: "Callhis",
+  components: {
+  },
   data() {
     return {
       // 遮罩层
@@ -173,57 +157,49 @@ export default {
       showSearch: true,
       // 总条数
       total: 0,
-      // appId表格数据
-      postList: [],
+      // 外呼记录表格数据
+      callhisList: [],
       // 弹出层标题
       title: "",
       // 是否显示弹出层
       open: false,
-      // 状态数据字典
-      statusOptions: [],
+      // 最后外呼时间时间范围
+      daterangeUpdateTime: [],
       // 查询参数
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-        postCode: undefined,
-        postName: undefined,
-        status: undefined
+        phone: null,
+        updateTime: null,
+        updateUserId: null
       },
       // 表单参数
       form: {},
       // 表单校验
       rules: {
-        postName: [
-          { required: true, message: "appId名称不能为空", trigger: "blur" }
+        phone: [
+          { required: true, message: "被叫电话不能为空", trigger: "blur" }
         ],
-        postCode: [
-          { required: true, message: "appId编码不能为空", trigger: "blur" }
-        ],
-        postSort: [
-          { required: true, message: "appId顺序不能为空", trigger: "blur" }
-        ]
       }
     };
   },
   created() {
     this.getList();
-    this.getDicts("sys_normal_disable").then(response => {
-      this.statusOptions = response.data;
-    });
   },
   methods: {
-    /** 查询appId列表 */
+    /** 查询外呼记录列表 */
     getList() {
       this.loading = true;
-      listPost(this.queryParams).then(response => {
-        this.postList = response.rows;
+      this.queryParams.params = {};
+      if (null != this.daterangeUpdateTime && '' != this.daterangeUpdateTime) {
+        this.queryParams.params["beginUpdateTime"] = this.daterangeUpdateTime[0];
+        this.queryParams.params["endUpdateTime"] = this.daterangeUpdateTime[1];
+      }
+      listCallhis(this.queryParams).then(response => {
+        this.callhisList = response.rows;
         this.total = response.total;
         this.loading = false;
       });
-    },
-    // appId状态字典翻译
-    statusFormat(row, column) {
-      return this.selectDictLabel(this.statusOptions, row.status);
     },
     // 取消按钮
     cancel() {
@@ -233,12 +209,10 @@ export default {
     // 表单重置
     reset() {
       this.form = {
-        postId: undefined,
-        postCode: undefined,
-        postName: undefined,
-        postSort: 0,
-        status: "0",
-        remark: undefined
+        id: null,
+        phone: null,
+        updateTime: null,
+        updateUserId: null
       };
       this.resetForm("form");
     },
@@ -249,43 +223,44 @@ export default {
     },
     /** 重置按钮操作 */
     resetQuery() {
+      this.daterangeUpdateTime = [];
       this.resetForm("queryForm");
       this.handleQuery();
     },
     // 多选框选中数据
     handleSelectionChange(selection) {
-      this.ids = selection.map(item => item.postId)
-      this.single = selection.length!=1
+      this.ids = selection.map(item => item.id)
+      this.single = selection.length!==1
       this.multiple = !selection.length
     },
     /** 新增按钮操作 */
     handleAdd() {
       this.reset();
       this.open = true;
-      this.title = "添加appId";
+      this.title = "添加外呼记录";
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
       this.reset();
-      const postId = row.postId || this.ids
-      getPost(postId).then(response => {
+      const id = row.id || this.ids
+      getCallhis(id).then(response => {
         this.form = response.data;
         this.open = true;
-        this.title = "修改appId";
+        this.title = "修改外呼记录";
       });
     },
     /** 提交按钮 */
-    submitForm: function() {
+    submitForm() {
       this.$refs["form"].validate(valid => {
         if (valid) {
-          if (this.form.postId != undefined) {
-            updatePost(this.form).then(response => {
+          if (this.form.id != null) {
+            updateCallhis(this.form).then(response => {
               this.msgSuccess("修改成功");
               this.open = false;
               this.getList();
             });
           } else {
-            addPost(this.form).then(response => {
+            addCallhis(this.form).then(response => {
               this.msgSuccess("新增成功");
               this.open = false;
               this.getList();
@@ -296,13 +271,13 @@ export default {
     },
     /** 删除按钮操作 */
     handleDelete(row) {
-      const postIds = row.postId || this.ids;
-      this.$confirm('是否确认删除appId编号为"' + postIds + '"的数据项?', "警告", {
+      const ids = row.id || this.ids;
+      this.$confirm('是否确认删除外呼记录编号为"' + ids + '"的数据项?', "警告", {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
           type: "warning"
         }).then(function() {
-          return delPost(postIds);
+          return delCallhis(ids);
         }).then(() => {
           this.getList();
           this.msgSuccess("删除成功");
@@ -311,12 +286,12 @@ export default {
     /** 导出按钮操作 */
     handleExport() {
       const queryParams = this.queryParams;
-      this.$confirm('是否确认导出所有appId数据项?', "警告", {
+      this.$confirm('是否确认导出所有外呼记录数据项?', "警告", {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
           type: "warning"
         }).then(function() {
-          return exportPost(queryParams);
+          return exportCallhis(queryParams);
         }).then(response => {
           this.download(response.msg);
         })

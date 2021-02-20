@@ -55,6 +55,10 @@ public class AzInterface extends BaseEntity
     @Excel(name = "版本")
     private String version;
 
+    /** 调用次数 */
+    @Excel(name = "调用次数")
+    private Long callCount;
+
     public void setId(Long id) 
     {
         this.id = id;
@@ -105,7 +109,15 @@ public class AzInterface extends BaseEntity
         this.balCount = balCount;
     }
 
-    public Long getBalCount() 
+    public Long getCallCount() {
+        return callCount;
+    }
+
+    public void setCallCount(Long callCount) {
+        this.callCount = callCount;
+    }
+
+    public Long getBalCount()
     {
         return balCount;
     }
@@ -160,6 +172,7 @@ public class AzInterface extends BaseEntity
             .append("createTime", getCreateTime())
             .append("timeout", getTimeout())
             .append("version", getVersion())
+                .append("callCount", getCallCount())
             .toString();
     }
 }

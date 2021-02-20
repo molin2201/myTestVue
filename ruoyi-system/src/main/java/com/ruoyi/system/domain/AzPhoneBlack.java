@@ -42,6 +42,10 @@ public class AzPhoneBlack extends BaseEntity
     @Excel(name = "创建人")
     private String createUserId;
 
+    /** 是否导入 */
+    @Excel(name = "是否导入")
+    private String isImport;
+
     public void setId(Long id) 
     {
         this.id = id;
@@ -105,6 +109,14 @@ public class AzPhoneBlack extends BaseEntity
         this.createUserId = createUserId;
     }
 
+    public String getIsImport() {
+        return isImport;
+    }
+
+    public void setIsImport(String isImport) {
+        this.isImport = isImport;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
@@ -114,7 +126,8 @@ public class AzPhoneBlack extends BaseEntity
             .append("source", getSource())
             .append("dbType", getDbType())
             .append("phoneType", getPhoneType())
-            .append("createTime", getCreateTime())
+                .append("isImport", getIsImport())
+                .append("createTime", getCreateTime())
             .append("createUserId", getCreateUserId())
             .toString();
     }

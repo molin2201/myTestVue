@@ -11,6 +11,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="source"    column="source"    />
         <result property="dbType"    column="db_type"    />
         <result property="phoneType"    column="phone_type"    />
+        <result property="isImport"    column="is_import"    />
         <result property="createTime"    column="create_time"    />
         <result property="createUserId"    column="create_user_id"    />
     </resultMap>
@@ -26,9 +27,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="status != null  and status != ''"> and status = #{status}</if>
             <if test="source != null "> and source = #{source}</if>
             <if test="dbType != null  and dbType != ''"> and db_type = #{dbType}</if>
+            <if test="isImport != null  and isImport != ''"> and is_import = #{isImport}</if>
             <if test="phoneType != null "> and phone_type = #{phoneType}</if>
             <if test="params.beginCreateTime != null and params.beginCreateTime != '' and params.endCreateTime != null and params.endCreateTime != ''"> and create_time between #{params.beginCreateTime} and #{params.endCreateTime}</if>
             <if test="createUserId != null "> and create_user_id = #{createUserId}</if>
+            <if test="params.neUserId != null and params.neUserId != '' "> and create_user_id != #{params.neUserId}</if>
         </where>
     </select>
     
@@ -45,6 +48,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="source != null">source,</if>
             <if test="dbType != null">db_type,</if>
             <if test="phoneType != null">phone_type,</if>
+            <if test="isImport != null">#{isImport},</if>
             <if test="createTime != null">create_time,</if>
             <if test="createUserId != null">create_user_id,</if>
          </trim>
@@ -54,6 +58,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="source != null">#{source},</if>
             <if test="dbType != null">#{dbType},</if>
             <if test="phoneType != null">#{phoneType},</if>
+            <if test="isImport != null">#{isImport},</if>
             <if test="createTime != null">#{createTime},</if>
             <if test="createUserId != null">#{createUserId},</if>
          </trim>
@@ -66,6 +71,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="status != null">status = #{status},</if>
             <if test="source != null">source = #{source},</if>
             <if test="dbType != null">db_type = #{dbType},</if>
+            <if test="isImport != null">is_import = #{isImport},</if>
             <if test="phoneType != null">phone_type = #{phoneType},</if>
             <if test="createTime != null">create_time = #{createTime},</if>
             <if test="createUserId != null">create_user_id = #{createUserId},</if>
@@ -83,4 +89,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             #{id}
         </foreach>
     </delete>
+
+    <update id="updateImportByIds">
+        update az_phone_black set  is_import ='Y'
+        where
+        id in
+        <foreach collection="list" item="item" open="(" separator="," close=")"> #{item} </foreach>
+    </update>
 </mapper>

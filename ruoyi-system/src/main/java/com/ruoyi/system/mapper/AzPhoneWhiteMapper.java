@@ -2,6 +2,7 @@ package com.ruoyi.system.mapper;
 
 import java.util.List;
 import com.ruoyi.system.domain.AzPhoneWhite;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * 白名单Mapper接口
@@ -11,6 +12,9 @@ import com.ruoyi.system.domain.AzPhoneWhite;
  */
 public interface AzPhoneWhiteMapper 
 {
+
+    public void updateImportByIds(@Param("list")List<Long> idsList);
+
     /**
      * 查询白名单
      * 

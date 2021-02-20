@@ -24,6 +24,32 @@ public class RedisCache
 {
     @Autowired
     public RedisTemplate redisTemplate;
+    /**
+     * 计数
+     *
+     * @param redisKey 缓存键值
+     * @return 缓存键值对应的数据
+     */
+    public Long addCount(final String redisKey,Long startValue)
+    {
+
+        long count = redisTemplate.opsForValue().increment(redisKey, startValue);
+
+        return count;
+    }
+
+    /**
+     * 获得缓存的基本对象。
+     *
+     * @param redisKey 缓存键值
+     * @return 缓存键值对应的数据
+     */
+    public Long reduceCount(final String redisKey,long startValue)
+    {
+        long count = redisTemplate.opsForValue().decrement(redisKey, startValue);
+        return count;
+    }
+
 
     /**
      * 计数
@@ -33,6 +59,7 @@ public class RedisCache
      */
     public Long addCount(final String redisKey)
     {
+
         long count = redisTemplate.opsForValue().increment(redisKey, 1);
 
         return count;
@@ -98,7 +125,16 @@ public class RedisCache
     {
         return redisTemplate.expire(key, timeout, unit);
     }
-
+    /**
+     * 获得缓存的Map
+     *
+     * @param key
+     * @return
+     */
+    public  boolean   cacheMapExists(final String hkey,String key)
+    {
+        return   redisTemplate.opsForHash().hasKey(hkey,key);
+    }
     /**
      * 获得缓存的基本对象。
      *
@@ -224,14 +260,24 @@ public class RedisCache
     /**
      * 获取Hash中的数据
      *
-     * @param key Redis键
-     * @param hKey Hash键
+     * @param hkey Redis键
+     * @param key Hash键
      * @return Hash中的对象
      */
-    public <T> T getCacheMapValue(final String key, final String hKey)
+    public <T> T getCacheMapValue(final String hkey, final String key)
     {
         HashOperations<String, String, T> opsForHash = redisTemplate.opsForHash();
-        return opsForHash.get(key, hKey);
+        return opsForHash.get(hkey, key);
+    }
+    /**
+     * 获取Hash中的数据大小
+     *
+     * @param hkey Redis键
+     * @return Hash中的对象
+     */
+    public Long getCacheMapSize(final String hkey)
+    {
+        return redisTemplate.opsForHash().size(hkey);
     }
 
     /**

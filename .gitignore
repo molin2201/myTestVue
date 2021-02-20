@@ -1,5 +1,6 @@
 /*.iml
 /*.class
+/libraries/
 .idea
 /.idea/
 /.svn/
@@ -24,3 +25,4 @@
 /lint.xml
 /upgrade.log
 /ruoyi-admin/target/
+.iml

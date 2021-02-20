@@ -2,6 +2,7 @@ package com.ruoyi.system.service.impl;
 
 import java.util.List;
 import com.ruoyi.common.utils.DateUtils;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.system.mapper.AzPhoneBlackMapper;
@@ -43,6 +44,11 @@ public class AzPhoneBlackServiceImpl implements IAzPhoneBlackService
     {
         return azPhoneBlackMapper.selectAzPhoneBlackList(azPhoneBlack);
     }
+    @Override
+    public void updateImportByIds(List<Long> idsList){
+         azPhoneBlackMapper.updateImportByIds(idsList);
+    }
+
 
     /**
      * 新增黑名单

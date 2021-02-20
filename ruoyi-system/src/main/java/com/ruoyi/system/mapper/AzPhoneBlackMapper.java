@@ -2,6 +2,7 @@ package com.ruoyi.system.mapper;
 
 import java.util.List;
 import com.ruoyi.system.domain.AzPhoneBlack;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * 黑名单Mapper接口
@@ -58,4 +59,7 @@ public interface AzPhoneBlackMapper
      * @return 结果
      */
     public int deleteAzPhoneBlackByIds(Long[] ids);
+
+    public void updateImportByIds(@Param("list")List<Long> idsList);
+
 }
